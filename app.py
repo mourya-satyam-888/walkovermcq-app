@@ -1,7 +1,5 @@
 from flask import Flask, render_template,session,request,redirect,url_for
-from flask_sqlalchemy import SQLAlchemy
-import random
-import datetime
+
 app= Flask(__name__)
 @app.route('/')
 def index():
@@ -111,5 +109,5 @@ def submit():
         return render_template("score.html",name=session["name"],total=session['marks'])
     except:
         return redirect('login',code=302)'''
-if __name__=="__main__"
+if __name__=="__main__":
     app.run(debug=False)
