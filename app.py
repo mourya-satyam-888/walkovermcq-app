@@ -3,6 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 import random
 import datetime
 app= Flask(__name__)
+@app.route('/')
+def index():
+    return "<h1>YEAH<h1>"
+'''
 app.config['SQLALCHEMY_DATABASE_URI']='sqlite:///working.db'
 app.config['SECRET_KEY']='1x25d1d63s4ddnant'
 db=SQLAlchemy(app)
@@ -106,6 +110,6 @@ def submit():
         db.session.commit()
         return render_template("score.html",name=session["name"],total=session['marks'])
     except:
-        return redirect('login',code=302)
+        return redirect('login',code=302)'''
 if __name__=="__main__"
     app.run(debug=False)
