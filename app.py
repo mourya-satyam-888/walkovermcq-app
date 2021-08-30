@@ -20,7 +20,7 @@ class Question(db.Model):
     option_3 = db.Column(db.String(30), nullable=False, unique=False)
     option_4 = db.Column(db.String(30), nullable=False, unique=False)
     answer   = db.Column(db.Integer(),nullable=False,unique=False)
-question=[]
+#question=[]
 @app.route('/')
 @app.route('/login')
 def index():
@@ -31,7 +31,7 @@ def index():
     return render_template('login.html')
 @app.route('/quest',methods=["GET","POST"])
 def quest():
-    global question
+    
     if request.method=="POST":
         session["name"] = request.form.get("username")
         session["email"] = request.form.get("email")
@@ -42,13 +42,28 @@ def quest():
         for q in all_q:
             question.append(q)
         print(question)
+
+        
         total = 5
         question = random.sample(question, total)
+
+        mn = []
+
+        for i in question :
+            d = {}
+            d['question'] = i.question
+            d['option_1'] = i.option_1
+            d['option_2'] = i.option_2
+            d['option_3'] = i.option_3
+            d['option_4'] = i.option_4
+            d['answer'] = i.answer
+            mn.append(d)
+        session["questionsa"] = mn
         return redirect('/questions',code=302)
     return redirect("login.html",code=302)
 @app.route('/questions',methods=["GET","POST"])
 def generated_question():
-    global question
+    question = session["questionsa"]
     if session['complete']:
         return redirect('/',code="302")
     #print(len(question))
@@ -66,7 +81,7 @@ def generated_question():
         option=int(option)
     except:
         option=0
-    if x.answer==int(option):
+    if x["answer"]==int(option):
         session['marks']+=1
     #print(session['marks'])
     try:
@@ -75,7 +90,7 @@ def generated_question():
         return redirect('/sub',code=302)
 @app.route('/submit',methods=["GET","POST"])
 def subsubmit():
-    global question
+    question = session["questionsa"]
     session['complete']=True
     try:
         x=question[0]
@@ -88,7 +103,7 @@ def subsubmit():
         option=int(option)
     except:
         option=0
-    if x.answer==int(option):
+    if x["answer"]==int(option):
         session['marks']+=1
     #print(session['marks'])
     return redirect('/sub',code=302)
