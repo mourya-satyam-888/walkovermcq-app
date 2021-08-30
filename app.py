@@ -28,6 +28,7 @@ def index():
     session["email"]=""
     session["flag"] =0
     session['complete']=False
+    session["questionsa"]=[]
     return render_template('login.html')
 @app.route('/quest',methods=["GET","POST"])
 def quest():
