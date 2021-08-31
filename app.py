@@ -140,7 +140,7 @@ def admin():
         return "<h1>Access Denied</h1>"
     session["access"]=0
     user=User.query.all()
-    user.sort(key=lambda x:x.date)
+    user.sort(key=lambda x:x.date,reverse=True)
     #print(user)
     return render_template("admin.html",user=user)
 if __name__=="__main__":
