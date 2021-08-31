@@ -123,5 +123,25 @@ def submit():
         return render_template("score.html",name=session["name"],total=session['marks'])
     except:
         return redirect('login',code=302)
+@app.route('/admin')
+def adminlog():
+    return render_template("adminlogin.html")
+@app.route('/admin_check',methods=["GET","POST"])
+def admincheck():
+    user = request.form.get("username")
+    pswd = request.form.get("pswd")
+    if user=="walkover" and pswd=="walkover":
+        session["access"]=1;
+        return redirect('/admin-surprise',code=302)
+    return "<h1>Access Denied</h1>"
+@app.route('/admin-surprise')
+def admin():
+    if session["access"]!=1:
+        return "<h1>Access Denied</h1>"
+    session["access"]=0
+    user=User.query.all()
+    user.sort(key=lambda x:x.date)
+    #print(user)
+    return render_template("admin.html",user=user)
 if __name__=="__main__":
     app.run(debug=False)
